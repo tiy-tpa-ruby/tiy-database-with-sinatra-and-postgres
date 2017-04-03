@@ -62,15 +62,15 @@
           </thead>
           <tbody>
             <tr>
-              <td></a> <%= @employee["id"] %></td>
-              <td><a href="/edit?id=<%= @employee['id'] %>"><%= @employee ["name"] %></td>
-              <td><%= @employee["phone"] %></td>
-              <td><%= @employee["address"] %></td>
-              <td><%= @employee["position"] %></td>
-              <td><%= @employee["salary"] %></td>
-              <td><%= @employee["github"] %></td>
-              <td><%= @employee["slack"] %></td>
-              <td><a class="btn btn-success btn-sm" href="/delete?id=<%= @employee['id'] %>" role="button">Delete!</a></td>
+              <td></a> <%= @employee.id %></td>
+              <td><a href="/edit?id=<%= @employee.id %>"><%= @employee.name %></td>
+              <td><%= @employee.phone %></td>
+              <td><%= @employee.address %></td>
+              <td><%= @employee.position %></td>
+              <td><%= @employee.salary %></td>
+              <td><%= @employee.github %></td>
+              <td><%= @employee.slack %></td>
+              <td><a class="btn btn-success btn-sm" href="/delete?id=<%= @employee.id %>" role="button">Delete!</a></td>
             </tr>
           </tbody>
         </table>
