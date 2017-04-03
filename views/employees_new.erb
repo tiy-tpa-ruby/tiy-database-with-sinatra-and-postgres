@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">TIY</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Employees <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/employees">Employees</a></li>
+                <li><a href="/new">Add an employee</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <img src="/images/The Iron Yard Logo.png" alt="TIY logo" height="40px" width="40px">
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+      <form action="/employees_new" method="get" class="form-horizontal">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Name</label>
+          <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Name">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Phone Number</label>
+          <input type="text" name="phone" class="form-control" id="exampleInputEmail1" placeholder="Phone">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Address</label>
+          <input type="text" name="address" class="form-control" id="exampleInputPassword1" placeholder="Address">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Position</label>
+          <input type="text" name="position" class="form-control" id="exampleInputEmail1" placeholder="Position">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Salary</label>
+          <input type="text" name="salary" class="form-control" id="exampleInputEmail1" placeholder="Salary">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Github Account Name</label>
+          <input type="text" name="github" class="form-control" id="exampleInputEmail1" placeholder="Github Account">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Slack Account Name</label>
+          <input type="text" name="slack" class="form-control" id="exampleInputEmail1" placeholder="Slack Account">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
