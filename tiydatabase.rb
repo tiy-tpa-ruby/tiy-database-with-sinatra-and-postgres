@@ -22,8 +22,11 @@ get '/employee_show' do
   employees = database.exec("select * from employees where id =$1", [id])
 
   @employee = employees.first
-
-  erb :employee_show
+  if @employee
+    erb :employee_show
+  else
+    erb :no_employee_found
+  end
 end
 
 get '/new' do
