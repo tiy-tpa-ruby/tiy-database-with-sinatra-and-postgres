@@ -1,53 +1,22 @@
 require 'sinatra'
 require 'pg'
 require 'sinatra/reloader' if development?
+require 'active_record'
 
-class Employee
-  attr_reader "id", "name", "phone", "address", "position" , "salary", "slack", "github"
+ActiveRecord::Base.logger = Logger.new(STDOUT)
+ActiveRecord::Base.establish_connection(
+  adapter: "postgresql",
+  database: "tiy-database"
+)
 
-  def initialize(employee)
-    @id = employee["id"]
-    @name = employee["name"]
-    @phone = employee["phone"]
-    @address = employee["address"]
-    @position = employee["position"]
-    @salary = employee["salary"]
-    @slack = employee["slack"]
-    @github = employee["github"]
-  end
+class Employee < ActiveRecord::Base
+  self.primary_key = "id"
+end
 
-  def self.create(params)
-    database = PG.connect(dbname: "tiy-database")
-    name     = params["name"]
-    phone    = params["phone"]
-    address  = params["address"]
-    position = params["position"]
-    salary   = params["salary"]
-    github   = params["github"]
-    slack    = params["slack"]
-
-    database.exec("insert into employees (name, phone, address, position, salary, github, slack) values($1, $2, $3, $4, $5, $6, $7)", [name, phone, address, position, salary, github, slack])
-  end
-
-  def self.all
-    database = PG.connect(dbname: "tiy-database")
-
-    return database.exec("select * from employees").map { |employee| Employee.new(employee) }
-  end
-
-  def self.find(id)
-    database = PG.connect(dbname: "tiy-database")
-
-    employees = database.exec("select * from employees where id =$1", [id]).map { |employee| Employee.new(employee) }
-
-    return employees.first
-  end
-
-  def self.search(text)
-    database = PG.connect(dbname: "tiy-database")
-
-    return database.exec("select * from employees where name like $1 or github=$2 or slack=$2", ["%#{text}%", text]).map { |employee| Employee.new(employee) }
-  end
+# This magic tells Sinatra to close the database connection
+# after each request
+after do
+  ActiveRecord::Base.connection.close
 end
 
 get '/' do
@@ -81,18 +50,19 @@ end
 
 get '/searched' do
   search = params["search"]
-  @employees = Employee.search(search)
+
+  # Exact match
+  # @employees = Employee.where(name: search)
+
+  @employees = Employee.where("name like $1 or github = $2 or slack = $2", "%#{search}%", search)
+
   erb :searched
 end
 
 get '/edit' do
   database = PG.connect(dbname: "tiy-database")
 
-  id = params["id"]
-
-  employees = database.exec("select * from employees where id =$1", [id])
-
-  @employee = employees.first
+  @employee = Employee.find(params["id"])
 
   erb :edit
 end
@@ -100,20 +70,21 @@ end
 get '/update' do
   database = PG.connect(dbname: "tiy-database")
 
-  id       = params["id"]
-  name     = params["name"]
-  phone    = params["phone"]
-  address  = params["address"]
-  position = params["position"]
-  salary   = params["salary"]
-  github   = params["github"]
-  slack    = params["slack"]
+  @employee = Employee.find(params["id"])
 
-  database.exec("UPDATE employees SET name = $1, phone = $2, address = $3, position = $4, salary = $5, github = $6, slack =$7 WHERE id = $8;", [name, phone, address, position, salary, github, slack, id])
+  # Short hand, since params already has keys that are the names of the columns
+  # and the values are the things the user typed into the form
+  @employee.update_attributes(params)
 
-  employees = database.exec("select * from employees where id = $1", [id])
-
-  @employee = employees.first
+  # Long hand
+  # @employee.name     = params["name"]
+  # @employee.phone    = params["phone"]
+  # @employee.address  = params["address"]
+  # @employee.position = params["position"]
+  # @employee.salary   = params["salary"]
+  # @employee.github   = params["github"]
+  # @employee.slack    = params["slack"]
+  # @employee.save
 
   erb :employee_show
 end
@@ -121,9 +92,9 @@ end
 get '/delete' do
   database = PG.connect(dbname: "tiy-database")
 
-  id = params["id"]
+  @employee = Employee.find(params["id"])
 
-  database.exec("DELETE FROM  employees where id = $1", [id])
+  @employee.destroy
 
   redirect('/employees')
 end
