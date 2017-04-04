@@ -54,7 +54,7 @@ get '/searched' do
   # Exact match
   # @employees = Employee.where(name: search)
 
-  @employees = Employee.where("name like $1 or github = $2 or slack = $2", "%#{search}%", search)
+  @employees = Employee.where("name like ? or github = ? or slack = ?", "%#{search}%", search, search)
 
   erb :searched
 end
