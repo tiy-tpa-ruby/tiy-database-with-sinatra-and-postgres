@@ -10,6 +10,9 @@ ActiveRecord::Base.establish_connection(
 )
 
 class Employee < ActiveRecord::Base
+  validates :name, presence: true
+  validates :position, inclusion: { in: %w{Instructor Student}, message: "%{value} must be Instructor or Student" }
+
   self.primary_key = "id"
 end
 
@@ -39,13 +42,19 @@ get '/employee_show' do
 end
 
 get '/new' do
+  # Build a new blank employee so the form is happy
+  @employee = Employee.new
+
   erb :employees_new
 end
 
 get '/employees_new' do
-  Employee.create(params)
-
-  redirect('/')
+  @employee = Employee.create(params)
+  if @employee.valid?
+    redirect('/')
+  else
+    erb :employees_new
+  end
 end
 
 get '/searched' do
@@ -86,7 +95,11 @@ get '/update' do
   # @employee.slack    = params["slack"]
   # @employee.save
 
-  erb :employee_show
+  if @employee.valid?
+    redirect to("/employee_show?id=#{@employee.id}")
+  else
+    erb :edit
+  end
 end
 
 get '/delete' do
