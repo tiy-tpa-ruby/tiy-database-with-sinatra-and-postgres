@@ -21,7 +21,7 @@ get '/employees' do
 end
 
 get '/employee_show' do
-  @employee = Employee.find(params["id"])
+  @employee = Employee.find_by(id: params["id"])
   if @employee
     erb :employee_show
   else
