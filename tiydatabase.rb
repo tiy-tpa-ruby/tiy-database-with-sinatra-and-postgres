@@ -1,20 +1,8 @@
 require 'sinatra'
 require 'pg'
 require 'sinatra/reloader' if development?
-require 'active_record'
 
-ActiveRecord::Base.logger = Logger.new(STDOUT)
-ActiveRecord::Base.establish_connection(
-  adapter: "postgresql",
-  database: "tiy-database"
-)
-
-class Employee < ActiveRecord::Base
-  validates :name, presence: true
-  validates :position, inclusion: { in: %w{Instructor Student}, message: "%{value} must be Instructor or Student" }
-
-  self.primary_key = "id"
-end
+require_relative 'active_record_setup'
 
 # This magic tells Sinatra to close the database connection
 # after each request
